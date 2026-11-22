@@ -7,9 +7,17 @@
   "background_color": "#f8fbfd",
   "theme_color": "#078fbe",
   "lang": "ja",
-  "description": "森建設工業株式会社 社内DXポータル v0.4.0",
+  "description": "森建設工業株式会社 社内DXポータル v0.7.0（安全巡視・水準測量・アプリ更新情報自動取得対応）",
   "icons": [
-    {"src":"assets/icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"assets/icon-512.png","sizes":"512x512","type":"image/png"}
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

@@ -47,6 +47,8 @@
     @media (max-width:370px){.grid{grid-template-columns:1fr}.tile{min-height:134px}.quick{grid-template-columns:1fr}.hero{padding:21px 17px}.logo{width:72px}.brand strong{font-size:16px}.version-chip{display:none}}
     @media (min-width:521px){.main{padding-left:20px;padding-right:20px}.tile{min-height:170px}.grid{gap:13px}}
     @media (prefers-reduced-motion:no-preference){.tile.ready,.appcard{transition:transform .12s ease,box-shadow .12s ease}}
+
+    .syncbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px;padding:10px 12px;border:1px solid #d8e8ef;border-radius:15px;background:#fff;color:var(--muted);font-size:10.5px;font-weight:700}.syncbar .left{display:flex;align-items:center;gap:7px;min-width:0}.syncdot{width:8px;height:8px;border-radius:50%;background:#aab9c1;flex:0 0 auto}.syncdot.ok{background:var(--success)}.syncdot.err{background:#d15d5d}.syncbtn,.mark-read{min-height:34px;padding:6px 10px;border:1px solid #cfe2eb;border-radius:11px;background:#f7fbfd;color:var(--brand2);font:inherit;font-size:10.5px;font-weight:900;cursor:pointer}.update-actions{display:flex;justify-content:flex-end;margin-top:8px}.update-alert{margin:0 0 14px;padding:12px 13px;border:1px solid #f2d39b;border-radius:15px;background:#fff8e9;color:#77571d;font-size:11.5px;line-height:1.55}.update-alert strong{display:block;margin-bottom:3px}.badge-update{display:inline-flex;align-items:center;min-height:22px;padding:3px 7px;border-radius:999px;background:#fff1df;color:#995a12;font-size:9.5px;font-weight:900}.badge-new{display:inline-flex;align-items:center;min-height:22px;padding:3px 7px;border-radius:999px;background:#e8f8ef;color:#14774f;font-size:9.5px;font-weight:900}.notice-list{display:grid;gap:8px}.notice-card{padding:11px 12px;border-radius:14px;background:#fff;border:1px solid #dcebf1}.notice-card .date{font-size:9.5px;color:var(--muted);font-weight:700}.notice-card .headline{margin-top:3px;font-size:12px;font-weight:900;line-height:1.45}.notice-card .body{margin-top:4px;font-size:11px;color:#637783;line-height:1.55}.small-note{margin-top:7px;font-size:10px;color:var(--muted);line-height:1.5}
   </style>
 </head>
 <body>
@@ -54,75 +56,119 @@
     <header class="topbar">
       <img class="logo" src="assets/logo.png" alt="森建設工業ロゴ">
       <div class="brand"><strong>森建設工業 DX</strong><span>社内業務ポータル</span></div>
-      <div class="version-chip" id="portal-version">v0.4.0</div>
+      <div class="version-chip" id="portal-version">v0.7.0</div>
     </header>
     <main id="app" class="main" aria-live="polite"></main>
-    <footer class="footer"><span>森建設工業株式会社</span><span>v0.4.0</span></footer>
+    <footer class="footer"><span>森建設工業株式会社</span><span>v0.7.0</span></footer>
   </div>
   <script>
     (()=>{
-      const data={
-        portalName:'森建設工業 DX',
-        version:'0.3.0',
-        updatedAt:'2026/09/29',
-        updates:[
-          {date:'2026/09/29',type:'new',label:'NEW',text:'測定機器出庫管理アプリ v0.1.0（試作・端末保存）を「社内業務」に追加'},
-          {date:'2026/09/29',type:'portal',label:'PORTAL',text:'ポータル v0.4.0：社内業務メニューを利用可能に更新'},
-          {date:'2026/09/29',type:'new',label:'NEW',text:'粒度試験アプリ v0.1.0 を「試験・品質管理」に追加'}
-        ],
-        categories:[
-          {id:'quality',name:'試験・品質管理',icon:'🧪',status:'ready',description:'現場試験・品質管理ツール',apps:[
-            {mark:'CP',name:'コーンペネトロメーター試験',description:'現場入力・自動計算・帳票出力',url:'https://taguchi503.github.io/cone-penetrometer-pwa/',version:'1.0.4',updatedAt:'',badge:''},
-            {mark:'粒度',name:'粒度試験',description:'ふるい分け結果・粒度曲線・規格判定・帳票出力',url:'https://taguchi503.github.io/furuiwake-test-pwa/',version:'0.1.0',updatedAt:'2026/09/29',badge:'NEW'}
-          ]},
-          {id:'safety',name:'安全管理',icon:'⛑️',status:'planned',description:'点検・KY・安全教育'},
-          {id:'documents',name:'書類・帳票',icon:'📄',status:'planned',description:'申請書・帳票・社内様式'},
-          {id:'construction',name:'施工管理',icon:'🚜',status:'planned',description:'現場・写真・数量・進捗'},
-          {id:'office',name:'社内業務',icon:'👥',status:'ready',description:'社内管理・申請・共通業務ツール',apps:[
-            {mark:'機器',name:'測定機器出庫管理',description:'測定機器の出庫・返却を登録・確認',url:'https://taguchi503.github.io/sokutei-kiki-pwa/',version:'0.1.0',updatedAt:'2026/09/28',badge:'試作',note:'端末保存のみ・共有機能は未実装'}
-          ]},
-          {id:'soba',name:'そば事業',icon:'🥢',status:'planned',description:'栽培・製造・販売・在庫'},
-          {id:'dictionary',name:'建設用語辞典',icon:'📘',status:'planned',description:'土木・建設用語を検索'},
-          {id:'manuals',name:'各種社内マニュアル',icon:'📚',status:'planned',description:'業務手順・教育資料・運用ルール'},
-          {id:'settings',name:'設定・その他',icon:'⚙️',status:'planned',description:'今後追加予定'}
-        ]
-      };
+      const BUILD_VERSION='0.7.0';
+      const FEED_URL='./portal-feed.json';
+      const SEEN_KEY='moriken_dx_seen_versions_v1';
+      const FEED_CACHE_KEY='moriken_dx_last_feed_v1';
+      const FALLBACK_DATA={"portalVersion":"0.7.0","updatedAt":"2026/11/22","notices":[{"id":"safety-patrol-032","date":"2026/11/22","title":"安全管理に「現場安全巡視」を追加","body":"安全管理から現場安全巡視を起動できるようにしました。○／×／該当なし、巡視者指摘・是正事項、音声入力、写真／電子印鑑、点検項目編集、期間コピー、帳票出力に対応します。"},{"id":"level-book-restart-010","date":"2026/11/22","title":"水準測量・野帳を新UI版へ更新","body":"水準測量を現場入力・確認履歴・野帳の3画面構成へ刷新。BS／FS／TP、標高自動計算、直前履歴、修正、PDF・Excel、音声入力に対応した新しいv0.1.0へ切り替えます。"},{"id":"cone-1010","date":"2026/11/19","title":"コーンペネトロメーター試験を v1.0.10 へ更新","body":"iOS印刷をPDF実ファイル方式へ改善。共有→プリント、PDF表示、PDF保存、標準印刷の多段フォールバックを追加し、既存保存データの互換性を維持しています。"},{"id":"portal-update-detect-070","date":"2026/11/22","title":"アプリ更新の検知方法を改善","body":"各アプリのapp-info.jsonを起動時・5分ごとに確認。版番号の上昇だけでなく、再構成などで版番号体系が変わった場合も「更新あり」として検知します。"},{"id":"data-safety-061","date":"2026/11/06","title":"更新時のデータ保護を強化","body":"子アプリは保存キーと既存データ互換を維持し、Service Workerは各アプリ専用キャッシュだけを整理する方針です。ポータル本体は子アプリの端末保存データへ触れません。"}],"categories":[{"id":"quality","name":"試験・品質管理","icon":"🧪","status":"ready","description":"現場試験・品質管理ツール","apps":[{"id":"cone","mark":"CP","name":"コーンペネトロメーター試験","description":"現場入力・qc自動計算・グラフ・端末保存・Excel・PDF／印刷対応","url":"https://taguchi503.github.io/cone-penetrometer-pwa/","metaUrl":"https://taguchi503.github.io/cone-penetrometer-pwa/app-info.json","version":"1.0.10","updatedAt":"2026/11/19","note":"保存100件・Excel／空白Excel・一括PDF・iOS印刷対応","releaseNotes":"iOS印刷をPDF実ファイル方式へ変更。既存保存データ互換を維持。"},{"id":"gradation","mark":"粒度","name":"粒度試験","description":"ふるい分け結果・粒度曲線・規格判定・帳票出力","url":"https://taguchi503.github.io/furuiwake-test-pwa/","metaUrl":"https://taguchi503.github.io/furuiwake-test-pwa/app-info.json","version":"0.1.0","updatedAt":"2026/09/29","note":"端末保存・更新確認対応","releaseNotes":"初期公開版。端末保存、帳票出力、更新確認、データ移行保護に対応。"}]},{"id":"safety","name":"安全管理","icon":"⛑️","status":"ready","description":"安全巡視・点検・KY・安全教育","apps":[{"id":"safety-patrol","mark":"巡視","name":"現場安全巡視","description":"現場安全巡視点検表の入力・是正記録・電子印鑑／写真・期間コピー・帳票出力","url":"https://taguchi503.github.io/safety-patrol-pwa/","metaUrl":"https://taguchi503.github.io/safety-patrol-pwa/app-info.json","version":"0.3.2","updatedAt":"2026/11/22","note":"安全管理 ＞ 安全巡視・試作版","releaseNotes":"コンペネ準拠の下部8機能、空白Excel様式、保存して次の巡視、写真／電子印鑑、点検項目編集、期間コピーに対応。"}]},{"id":"documents","name":"書類・帳票","icon":"📄","status":"planned","description":"申請書・帳票・社内様式"},{"id":"construction","name":"施工管理","icon":"🚜","status":"ready","description":"測量・現場・写真・数量・進捗","apps":[{"id":"level-book","mark":"水準","name":"水準測量・野帳","description":"現場入力画面・確認履歴・野帳を分離した水準測量アプリ","url":"https://taguchi503.github.io/level-book-pwa/","metaUrl":"https://taguchi503.github.io/level-book-pwa/app-info.json","version":"0.1.0","updatedAt":"2026/11/19","note":"試作版・端末保存・音声入力対応","releaseNotes":"測定・確認履歴・野帳の3画面構成、BS／FS／TP入力、TP後の次BS切替、直前5件、1つ戻す、修正、PDF印刷、Excel出力、音声入力に対応。"}]},{"id":"office","name":"社内業務","icon":"👥","status":"ready","description":"社内管理・申請・共通業務ツール","apps":[{"id":"equipment","mark":"機器","name":"測定機器出庫管理","description":"測定機器の出庫・返却を登録・確認","url":"https://taguchi503.github.io/sokutei-kiki-pwa/","metaUrl":"https://taguchi503.github.io/sokutei-kiki-pwa/app-info.json","version":"0.2.2","updatedAt":"2026/11/05","note":"試作・端末保存のみ・共有機能未実装","releaseNotes":"更新前バックアップ・ミラー保存・自動復元を追加。履歴削除もバックアップ後に実行。"}]},{"id":"soba","name":"そば事業","icon":"🥢","status":"planned","description":"栽培・製造・販売・在庫"},{"id":"dictionary","name":"土木用語辞典","icon":"📘","status":"ready","description":"土木・建設用語、資機材を検索","apps":[{"id":"dictionary-app","mark":"辞典","name":"現場の土木辞典","description":"土木用語・資機材を写真と説明から検索","url":"https://taguchi503.github.io/doboku-jiten-pwa/","metaUrl":"https://taguchi503.github.io/doboku-jiten-pwa/app-info.json","version":"1.1.0","updatedAt":"2026/10/28","note":"音声検索・お気に入り・更新通知対応","releaseNotes":"アプリ更新通知を追加。お気に入り等のブラウザ保存データは維持。"}]},{"id":"manuals","name":"各種社内マニュアル","icon":"📚","status":"planned","description":"業務手順・教育資料・運用ルール"},{"id":"settings","name":"設定・その他","icon":"⚙️","status":"planned","description":"今後追加予定"}]};
       const root=document.getElementById('app');
+      let data=structuredClone(FALLBACK_DATA);
+      let syncState={ok:false,text:'更新情報を確認しています…',checkedAt:''};
+      let versionChanges=[];
       const esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+      const nowText=()=>new Intl.DateTimeFormat('ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());
       const appCount=()=>data.categories.reduce((n,c)=>n+(Array.isArray(c.apps)?c.apps.length:0),0);
+      const allApps=()=>data.categories.flatMap(c=>Array.isArray(c.apps)?c.apps:[]);
+      function getSeen(){try{return JSON.parse(localStorage.getItem(SEEN_KEY)||'{}')}catch{return {}}}
+      function setSeen(v){try{localStorage.setItem(SEEN_KEY,JSON.stringify(v))}catch{}}
+      function rememberFeed(v){try{localStorage.setItem(FEED_CACHE_KEY,JSON.stringify(v))}catch{}}
+      function loadRememberedFeed(){try{return JSON.parse(localStorage.getItem(FEED_CACHE_KEY)||'null')}catch{return null}}
+      function cmpVersion(a,b){
+        const pa=String(a||'0').replace(/^v/,'').split('.').map(x=>parseInt(x,10)||0), pb=String(b||'0').replace(/^v/,'').split('.').map(x=>parseInt(x,10)||0);
+        for(let i=0;i<Math.max(pa.length,pb.length);i++){const d=(pa[i]||0)-(pb[i]||0);if(d) return d>0?1:-1} return 0;
+      }
+      async function fetchJson(url){const r=await fetch(url+(url.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store'});if(!r.ok) throw new Error(String(r.status));return r.json()}
+      async function refreshData({manual=false}={}){
+        syncState={ok:false,text:'更新情報を確認しています…',checkedAt:''}; if(manual) home();
+        try{
+          const feed=await fetchJson(FEED_URL);
+          if(feed&&Array.isArray(feed.categories)){data=feed;rememberFeed(feed)}
+          await refreshAppMeta();
+          syncState={ok:true,text:'最新版を確認済み',checkedAt:nowText()};
+        }catch(e){
+          const cached=loadRememberedFeed(); if(cached&&Array.isArray(cached.categories)) data=cached;
+          try{await refreshAppMeta()}catch{}
+          syncState={ok:false,text:'通信できないため保存済み情報を表示',checkedAt:nowText()};
+        }
+        computeChanges(); home();
+      }
+      async function refreshAppMeta(){
+        const jobs=allApps().map(async app=>{
+          if(!app.metaUrl) return;
+          try{
+            const meta=await fetchJson(app.metaUrl);
+            if(meta.version) app.version=String(meta.version).replace(/^v/,'');
+            if(meta.updatedAt) app.updatedAt=meta.updatedAt;
+            if(meta.description) app.description=meta.description;
+            if(meta.note!==undefined) app.note=meta.note;
+            if(meta.releaseNotes) app.releaseNotes=meta.releaseNotes;
+          }catch{}
+        });
+        await Promise.all(jobs);
+      }
+      function computeChanges(){
+        versionChanges=[]; const seen=getSeen(); const first=Object.keys(seen).length===0;
+        for(const app of allApps()){
+          if(first){seen[app.id]=app.version;continue}
+          if(!seen[app.id]) versionChanges.push({kind:'new',app,oldVersion:''});
+          else if(String(app.version)!==String(seen[app.id])) versionChanges.push({kind:'update',app,oldVersion:seen[app.id]});
+        }
+        if(first) setSeen(seen);
+      }
+      function markAllSeen(){const seen=getSeen();for(const app of allApps()) seen[app.id]=app.version;setSeen(seen);versionChanges=[];home()}
+      function markAppSeen(id){const app=allApps().find(a=>a.id===id);if(!app)return;const seen=getSeen();seen[id]=app.version;setSeen(seen);versionChanges=versionChanges.filter(x=>x.app.id!==id)}
+      function changeFor(id){return versionChanges.find(x=>x.app.id===id)}
       function home(){
         document.title='森建設工業 DX | 社内業務ポータル';
+        const portalMismatch=data.portalVersion&&cmpVersion(data.portalVersion,BUILD_VERSION)>0;
         root.innerHTML=`
-          <section class="hero"><div class="kicker">MORIKEN INTERNAL DX</div><h1>森建設工業 DX</h1><div class="sub">社内業務ポータル</div><p>社内で使う業務アプリを、ここからひとつにつないでいきます。</p></section>
-          <section class="quick"><div class="stat live"><b>${appCount()}</b><span>現在利用可能なアプリ</span></div><div class="stat"><b>${data.version}</b><span>ポータル現在バージョン</span></div></section>
-          <div class="section-head"><h2>更新情報</h2><span>最終更新 ${esc(data.updatedAt)}</span></div>
-          <section class="updates" aria-label="更新情報">${data.updates.map(updateItem).join('')}</section>
+          <section class="hero"><div class="kicker">MORIKEN INTERNAL DX</div><h1>森建設工業 DX</h1><div class="sub">社内業務ポータル</div><p>独立した社内業務アプリを、ここから安全にひとつにつなぎます。</p></section>
+          <section class="syncbar"><div class="left"><span class="syncdot ${syncState.ok?'ok':'err'}"></span><span>${esc(syncState.text)}${syncState.checkedAt?'・'+esc(syncState.checkedAt):''}</span></div><button class="syncbtn" id="refresh" type="button">更新確認</button></section>
+          ${portalMismatch?`<section class="update-alert"><strong>ポータル本体の更新があります</strong>最新版 v${esc(data.portalVersion)} が公開されています。画面を再読み込みしてください。</section>`:''}
+          <section class="quick"><div class="stat live"><b>${appCount()}</b><span>現在利用可能なアプリ</span></div><div class="stat"><b>${versionChanges.length}</b><span>未確認のNEW・更新</span></div></section>
+          <div class="section-head"><h2>更新・お知らせ</h2><span>自動取得</span></div>
+          <section class="updates" aria-label="更新・お知らせ">
+            ${versionChanges.length?versionChanges.map(changeItem).join(''):''}
+            ${(data.notices||[]).map(noticeItem).join('') || '<div class="small-note">現在のお知らせはありません。</div>'}
+            ${versionChanges.length?'<div class="update-actions"><button type="button" class="mark-read" id="mark-all">更新情報を確認済みにする</button></div>':''}
+          </section>
           <div class="section-head"><h2>業務メニュー</h2><span>順次追加予定</span></div>
           <section class="grid" aria-label="業務メニュー">${data.categories.map(tile).join('')}</section>
           <div id="toast" class="toast" role="status">このメニューは現在準備中です。</div>
-          <section class="notice"><div class="nicon">📢</div><div><strong>現在利用可能：${appCount()}アプリ</strong><span>「試験・品質管理」から2アプリ、「社内業務」から測定機器出庫管理（試作）を利用できます。</span></div></section>`;
+          <section class="notice"><div class="nicon">📢</div><div><strong>ポータル本体を更新しなくても情報更新</strong><span>各アプリの app-info.json とお知らせデータを起動時に読み込みます。将来、お知らせ部分はFirebaseへ差し替え可能です。</span></div></section>`;
+        document.getElementById('refresh')?.addEventListener('click',()=>refreshData({manual:true}));
+        document.getElementById('mark-all')?.addEventListener('click',markAllSeen);
         root.querySelectorAll('[data-ready]').forEach(b=>b.addEventListener('click',()=>category(b.dataset.ready)));
-        root.querySelectorAll('[data-planned]').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById('toast');t.classList.add('show');t.textContent=b.dataset.planned+' は現在準備中です。';t.scrollIntoView({behavior:'smooth',block:'nearest'});}));
+        root.querySelectorAll('[data-planned]').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById('toast');t.classList.add('show');t.textContent=b.dataset.planned+' は現在準備中です。';t.scrollIntoView({behavior:'smooth',block:'nearest'})}));
       }
-      function updateItem(u){return `<div class="update-item"><span class="utag ${esc(u.type)}">${esc(u.label)}</span><div><div class="udate">${esc(u.date)}</div><div class="utext">${esc(u.text)}</div></div></div>`}
+      function changeItem(x){const label=x.kind==='new'?'NEW':'更新あり';const old=x.oldVersion?`（v${esc(x.oldVersion)} → v${esc(x.app.version)}）`:`（v${esc(x.app.version)}）`;return `<div class="update-item"><span class="utag ${x.kind==='new'?'new':'update'}">${label}</span><div><div class="udate">${esc(x.app.updatedAt||'最新版')}</div><div class="utext">${esc(x.app.name)} ${old}${x.app.releaseNotes?'<br>'+esc(x.app.releaseNotes):''}</div></div></div>`}
+      function noticeItem(n){return `<div class="notice-card"><div class="date">${esc(n.date||'')}</div><div class="headline">${esc(n.title||'お知らせ')}</div>${n.body?`<div class="body">${esc(n.body)}</div>`:''}</div>`}
       function tile(c){
-        if(c.status==='ready') return `<button type="button" class="tile ready" data-ready="${esc(c.id)}"><div class="ico" aria-hidden="true">${esc(c.icon)}</div><div class="title">${esc(c.name)}</div><div class="desc">${esc(c.description)}</div><div class="state">● ${c.apps.length}アプリ利用可能</div></button>`;
+        if(c.status==='ready') return `<button type="button" class="tile ready" data-ready="${esc(c.id)}"><div class="ico" aria-hidden="true">${esc(c.icon)}</div><div class="title">${esc(c.name)}</div><div class="desc">${esc(c.description)}</div><div class="state">● ${(c.apps||[]).length}アプリ利用可能</div></button>`;
         return `<button type="button" class="tile plan" data-planned="${esc(c.name)}"><div class="ico" aria-hidden="true">${esc(c.icon)}</div><div class="title">${esc(c.name)}</div><div class="desc">${esc(c.description)}</div><div class="state">準備中</div></button>`;
       }
       function category(id){
         const c=data.categories.find(x=>x.id===id); if(!c||c.status!=='ready') return home();
-        document.title=c.name+' | '+data.portalName;
-        root.innerHTML=`<section class="category"><button type="button" class="back" id="back">← ホームへ戻る</button><div class="cathead"><div class="eyebrow">MORIKEN DX</div><h1>${esc(c.name)}</h1><p>${esc(c.description)} / ${c.apps.length}アプリ利用可能</p></div><div class="app-list">${c.apps.map(appCard).join('')}</div></section>`;
+        document.title=c.name+' | 森建設工業 DX';
+        root.innerHTML=`<section class="category"><button type="button" class="back" id="back">← ホームへ戻る</button><div class="cathead"><div class="eyebrow">MORIKEN DX</div><h1>${esc(c.name)}</h1><p>${esc(c.description)} / ${(c.apps||[]).length}アプリ利用可能</p></div><div class="app-list">${(c.apps||[]).map(appCard).join('')}</div></section>`;
         document.getElementById('back').addEventListener('click',home);
+        root.querySelectorAll('[data-app-id]').forEach(a=>a.addEventListener('click',()=>markAppSeen(a.dataset.appId)));
       }
       function appCard(a){
-        const meta=[`v${esc(a.version)}`,a.updatedAt?`更新 ${esc(a.updatedAt)}`:'既存アプリ',a.note?esc(a.note):''].filter(Boolean);
-        return `<a class="appcard" href="${esc(a.url)}" target="_self" rel="noopener"><div class="app-top"><div class="appmark">${esc(a.mark)}</div><div class="app-copy"><div class="app-title-row"><div class="app-title">${esc(a.name)}</div>${a.badge?`<span class="new-badge">${esc(a.badge)}</span>`:''}</div><div class="app-desc">${esc(a.description)}</div><div class="meta">${meta.map(x=>`<span>${x}</span>`).join('')}</div></div></div><div class="openrow"><span>アプリを開く</span><span class="arrow">›</span></div></a>`;
+        const ch=changeFor(a.id); const meta=[`v${esc(a.version)}`,a.updatedAt?`更新 ${esc(a.updatedAt)}`:'',a.note?esc(a.note):''].filter(Boolean);
+        return `<a class="appcard" data-app-id="${esc(a.id)}" href="${esc(a.url)}" target="_self" rel="noopener"><div class="app-top"><div class="appmark">${esc(a.mark)}</div><div class="app-copy"><div class="app-title-row"><div class="app-title">${esc(a.name)}</div>${ch?`<span class="${ch.kind==='new'?'badge-new':'badge-update'}">${ch.kind==='new'?'NEW':'更新あり'}</span>`:''}</div><div class="app-desc">${esc(a.description)}</div><div class="meta">${meta.map(x=>`<span>${x}</span>`).join('')}</div></div></div><div class="openrow"><span>アプリを開く</span><span class="arrow">›</span></div></a>`;
       }
       home();
-      if('serviceWorker' in navigator && location.protocol!=='file:'){
-        addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(reg=>reg.update()).catch(()=>{}));
-      }
+      if('serviceWorker' in navigator && location.protocol!=='file:') addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(r=>r.update()).catch(()=>{}));
+      refreshData();
+      setInterval(()=>refreshData(),5*60*1000);
     })();
   </script>
 </body>
