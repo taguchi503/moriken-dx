@@ -1,6 +1,6 @@
 {
-  "portalVersion": "0.7.0",
-  "updatedAt": "2026/11/22",
+  "portalVersion": "1.0.0",
+  "updatedAt": "2026/11/25",
   "notices": [
     {
       "id": "safety-patrol-032",
@@ -48,10 +48,10 @@
           "description": "現場入力・qc自動計算・グラフ・端末保存・Excel・PDF／印刷対応",
           "url": "https://taguchi503.github.io/cone-penetrometer-pwa/",
           "metaUrl": "https://taguchi503.github.io/cone-penetrometer-pwa/app-info.json",
-          "version": "1.0.10",
-          "updatedAt": "2026/11/19",
+          "version": "1.1.0",
+          "updatedAt": "2026/11/25",
           "note": "保存100件・Excel／空白Excel・一括PDF・iOS印刷対応",
-          "releaseNotes": "iOS印刷をPDF実ファイル方式へ変更。既存保存データ互換を維持。"
+          "releaseNotes": "バージョン番号統一に伴いv1.0.10からv1.1.0へ移行。機能・帳票・保存形式は変更なし。"
         },
         {
           "id": "gradation",
@@ -81,10 +81,10 @@
           "description": "現場安全巡視点検表の入力・是正記録・電子印鑑／写真・期間コピー・帳票出力",
           "url": "https://taguchi503.github.io/safety-patrol-pwa/",
           "metaUrl": "https://taguchi503.github.io/safety-patrol-pwa/app-info.json",
-          "version": "0.3.2",
-          "updatedAt": "2026/11/22",
-          "note": "安全管理 ＞ 安全巡視・試作版",
-          "releaseNotes": "コンペネ準拠の下部8機能、空白Excel様式、保存して次の巡視、写真／電子印鑑、点検項目編集、期間コピーに対応。"
+          "version": "1.0.0",
+          "updatedAt": "2026/11/25",
+          "note": "安全管理 ＞ 安全巡視",
+          "releaseNotes": "v0.3.12から正式運用版v1.0.0へ移行。機能・画面・帳票・保存形式は変更なし。"
         }
       ]
     },

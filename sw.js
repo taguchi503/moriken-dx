@@ -1,4 +1,4 @@
-const CACHE='moriken-dx-portal-v0.7.0';
+const CACHE='moriken-dx-portal-v1.0.0';
 const CACHE_PREFIX='moriken-dx-portal-';
 const STATIC=['./manifest.webmanifest','./assets/logo.png','./assets/icon-192.png','./assets/icon-512.png'];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)));});
